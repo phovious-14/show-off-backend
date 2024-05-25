@@ -5,8 +5,8 @@ const cors = require("cors");
 const port = 3000;
 const cloudinary = require("./services/cloudinary.js");
 const upload = require("./utils/video.js")
-
-const {moralis_api_key} = require('./api_key.js')
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 
 app.use(cors());
 
@@ -53,7 +53,7 @@ app.post("/video_upload", upload.single('file'), async (req, res) => {
 });
 
 Moralis.start({
-  apiKey: moralis_api_key
+  apiKey: process.env.MORALIS_API
 }).then(() => {
   app.listen(port, () => {
     console.log(`${port} Listening for API Calls`);

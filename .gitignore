@@ -2,5 +2,4 @@
 /.env
 .vercel
 /.env.example
-/api_key.js
 /dummy.js
