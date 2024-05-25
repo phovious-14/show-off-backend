@@ -6,6 +6,8 @@ const port = 3000;
 const cloudinary = require("./services/cloudinary.js");
 const upload = require("./utils/video.js")
 
+const {moralis_api_key} = require('./api_key.js')
+
 app.use(cors());
 
 app.use(express.urlencoded({limit:'50mb', extended:true })); //set urlencoded to true
@@ -51,7 +53,7 @@ app.post("/video_upload", upload.single('file'), async (req, res) => {
 });
 
 Moralis.start({
-  apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6ImI4YWQ3MjBmLWYwMDQtNDY0MC1iN2ZmLWQwMTM3MzlhNTQzYyIsIm9yZ0lkIjoiMjcwNTMyIiwidXNlcklkIjoiMjc1NDkwIiwidHlwZUlkIjoiYjYzZjNmOGQtOTA3Ny00NWMyLWE0YTUtMTU2OTVhMjdmMmQ2IiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3MTU2NTUyODksImV4cCI6NDg3MTQxNTI4OX0.0B7ZGP9B-LgIRqQE10TuCRzjEVc8nd2sNQ_OmqnZ3Do",
+  apiKey: moralis_api_key
 }).then(() => {
   app.listen(port, () => {
     console.log(`${port} Listening for API Calls`);
