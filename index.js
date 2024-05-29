@@ -7,6 +7,8 @@ const cloudinary = require("./services/cloudinary.js");
 const upload = require("./utils/video.js")
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+const HuddleAuth = require('@huddle01/server-sdk/auth');
+const { AccessToken, Role } = HuddleAuth
 
 app.use(cors());
 
@@ -51,6 +53,27 @@ app.post("/video_upload", upload.single('file'), async (req, res) => {
     return res.status(400).json();
   }
 });
+
+app.post("/join_room", async (req, res) => {
+console.log('loagging')
+  const {user, roomId} = req.body
+  let role = ''
+  if(user == 'admin') {
+    role = Role.HOST
+  } else {
+    role = Role.GUEST
+  }
+
+  const accessToken = new AccessToken({
+    apiKey: process.env.HUDDLE01_API,
+    roomId,
+    //available roles: Role.HOST, Role.CO_HOST, Role.SPEAKER, Role.LISTENER, Role.GUEST - depending on the privileges you want to give to the user
+    role,
+  });
+ 
+const token = await accessToken.toJwt()
+return res.status(200).json({token});
+})
 
 Moralis.start({
   apiKey: process.env.MORALIS_API
